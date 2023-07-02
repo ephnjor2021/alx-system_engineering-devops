@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-#read and cut stuff
-
-while read name
-do
-    echo "$name" | cut -d":" -f1,3,6
+#bash script that displays the content of the file /etc/passwd
+while IFS=':' read -ra line; do
+    echo "${line[0]}:${line[3]}:${line[5]}"
 done < /etc/passwd
