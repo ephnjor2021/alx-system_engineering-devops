@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-#shows attached IPS
-ip a | grep "scope" | grep -Po '(?<=inet )[\d.]+'
+# bash script that displays all active IPv4 IPs on the machine it’s executed on
+ifconfig | grep "inet addr" | cut -d ':' -f2 | cut -d ' ' -f1
