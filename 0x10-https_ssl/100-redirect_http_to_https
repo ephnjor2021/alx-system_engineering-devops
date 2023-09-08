@@ -41,7 +41,7 @@ frontend www-http
         default_backend nodes
 
 frontend www-https
-        bind *:443 ssl crt /etc/haproxy/ssl/www.danielk.space.pem
+        bind *:443 ssl crt /etc/haproxy/ssl/www.ephraim.tech.pem
         reqadd X-Forwarded-Proto:\ https
         default_backend nodes
 
