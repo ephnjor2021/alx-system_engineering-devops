@@ -1,23 +1,32 @@
 #!/usr/bin/python3
-# csv exported
+"""Using what you did in the task #0, extend your Python script
+ to export data in the JSON format."""
 import json
-from requests import get
+import requests
 from sys import argv
 
 
-def jsonWrite(user):
-    """writes to csv"""
-    data = get('https://jsonplaceholder.typicode.com/todos?userId={}'.format(
-        user)).json()
-    name = get('https://jsonplaceholder.typicode.com/users/{}'.format(
-        user)).json().get('username')
-    ordered = []
-    for line in data:
-        ordered.append({"task": line.get('title'), "completed":
-                        line.get('completed'), "username": name})
-    with open('{}.json'.format(user), 'w') as f:
-        json.dump({user: ordered}, f)
-
-
 if __name__ == "__main__":
-    jsonWrite(int(argv[1]))
+    file_name = "{}.json".format(argv[1])
+    user_id = int(argv[1])
+    data = {user_id: []}
+    aux_dict = {}
+
+    # get the info of the users and tasks by his id in dict format
+    users = requests.get(
+        "https://jsonplaceholder.typicode.com/users/{}".format(
+                argv[1])).json()
+    todos = requests.get(
+        "https://jsonplaceholder.typicode.com/todos?userId={}".format(
+                argv[1])).json()
+
+    for todo in todos:
+        aux_dict["task"] = todo.get("title")
+        aux_dict["completed"] = todo.get("completed")
+        aux_dict["username"] = users.get("username")
+        data[user_id].append(aux_dict)
+        aux_dict = {}
+
+    # create and open a file and fill with the info above
+    with open(file_name, mode="w", encoding="utf-8") as jsonfile:
+        json.dump(data, jsonfile, ensure_ascii=False)
