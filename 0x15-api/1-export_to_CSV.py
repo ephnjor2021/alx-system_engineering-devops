@@ -1,43 +1,28 @@
 #!/usr/bin/python3
-# script to gather todo data from an API and write to CSV file
+"""Using what you did in the task #0, extend your Python script to export data in the CSV format."""
 import csv
 import requests
-import sys
+from sys import argv
 
 
-def get_username(base_url, user_id):
-    """Gets username
-       Args:
-           base_url (str): base url for API
-           user_id (str): user id number
-       Returns: username
-    """
-    response = requests.get(
-        "{}users/{}".format(base_url, user_id))
-    usr_dict = response.json()
-    return usr_dict['username']
+if __name__ == "__main__":
+    file_name = "{}.csv".format(argv[1])
+    user_id = int(argv[1])
 
+    # get the info of the users and tasks by his id in dict format
+    users = requests.get(
+        "https://jsonplaceholder.typicode.com/users/{}".format(
+                argv[1])).json()
+    todos = requests.get(
+        "https://jsonplaceholder.typicode.com/todos?userId={}".format(
+                            argv[1])).json()
 
-def get_todo_list(base_url, user_id):
-    """Gets todo list
-       Args:
-           base_url (str): base url for API
-           user_id (str): user id number
-       Returns: list of todo items (dicts)
-    """
-    response = requests.get(
-        "{}users/{}/todos".format(base_url, user_id))
-    return response.json()
-
-
-if __name__ == '__main__':
-    user_id = sys.argv[1]
-    base_url = 'https://jsonplaceholder.typicode.com/'
-
-    uname = get_username(base_url, user_id)
-    todo_list = get_todo_list(base_url, user_id)
-
-    with open('{}.csv'.format(user_id), 'w') as csvfile:
-        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        for todo in todo_list:
-            writer.writerow([user_id, uname, todo['completed'], todo['title']])
+    # create and open a file and fill with the info below
+    with open(file_name, mode='w') as csvfile:
+        content = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        for todo in todos:
+            content.writerow(
+                [user_id,
+                    users.get('username'),
+                    todo.get('completed'),
+                    todo.get('title')])
