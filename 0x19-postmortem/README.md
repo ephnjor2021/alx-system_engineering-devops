@@ -1,9 +1,5 @@
----
-title: |
-  Incident: Database Downtime
-
-  Date: October 11, 2023
----
+# Incident: Database Downtime
+# Date: October 11, 2023
 
 ## Introduction
 
@@ -49,7 +45,7 @@ significant database downtime affecting our production environment.
 
 -   Communication breakdown between teams during the initial response.
 
-Lessons Learned
+## Lessons Learned
 
 -   Enhance monitoring and alerting systems to detect critical issues
     more rapidly.
